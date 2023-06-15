@@ -2,7 +2,7 @@ import express from "express"
 import jwt from 'jsonwebtoken';
 import User from "../models/user.model.js";
 
-const authenticationMiddleware = (req, res, next) => {
+const userAuthMiddleware = (req, res, next) => {
   const MY_JWT_SECRET_KEY = process.env.JWT_PRIVATE_KEY;
   const authHeader = req.header("Authorization");
   console.log(authHeader);
@@ -13,9 +13,9 @@ const authenticationMiddleware = (req, res, next) => {
     // Verify the token and check if it represents an admin user
     // Add your token verification and admin check logic here
     try {
-
       const decodedUser = jwt.verify(token, MY_JWT_SECRET_KEY);
       if (decodedUser) {
+        req.token=token;
         req.user = decodedUser; // Store the decoded user information if needed
         next();// Proceed to the next middleware or route handler
       } else {
@@ -32,4 +32,4 @@ const authenticationMiddleware = (req, res, next) => {
   }
 };
 
-export default authenticationMiddleware;
+export default userAuthMiddleware;

@@ -2,6 +2,7 @@
 
 // Create a new course
 export const createNewCourse = async (req, res) => {
+  // This controller must be called by a teacher only.
   try {
     const {courseCode,title} = req.body;
     const newCourse = await Course.create({});
@@ -11,15 +12,15 @@ export const createNewCourse = async (req, res) => {
   }
 };
 
-// // Get all courses
-// export const getAllCourses = async (req, res) => {
-//   try {
-//     const courses = await Course.find();
-//     res.json(courses);
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
+// Get all courses
+export const getAllCourses = async (req, res) => {
+  try {
+    const courses = await Course.find();
+    res.json(courses);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 // // Get a course by ID
 // export const getCourseById = async (req, res) => {

@@ -67,7 +67,7 @@ userSchema.methods.generateAuthToken = async function () {
   const user = this; // refers to the user instance.
   const privateKey = process.env.JWT_PRIVATE_KEY;
   const token = jwt.sign({ _id: user._id.toString(), role: user.role.toString() }, privateKey, {
-    expiresIn: "1h", // Set the token expiration time as per your requirements
+    expiresIn: "36h", // Set the token expiration time as per your requirements
   }); //get the private key from the config file -> environment variable
   user.tokens = user.tokens.concat({ token }); // concatinate the new token into user's tokens list/array.
   await user.save();
@@ -77,7 +77,7 @@ userSchema.methods.generateAuthToken = async function () {
 /********************** */
 
 userSchema.statics.findUserByCredentials = async (email, password) => {
-  console.log('Finding by credentials')
+  console.log('Finding by credentials......')
   const user = await User.findOne({ email });
   if (!user) {
     // in case user is not found.

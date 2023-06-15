@@ -4,7 +4,7 @@ import User from "../models/user.model.js";
 export const getAllStudents = async(req,res)=>{
     console.log("GET ALL STUDENTS ROUTE HAS REACHED.");
     try{
-        const students = await Student.find();
+        const students = await Student.find().populate('quizzesTaken');
         console.log(students);
         res.status(200).json(students);
     }catch(err){

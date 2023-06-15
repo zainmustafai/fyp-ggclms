@@ -13,31 +13,26 @@ export const userLogin = async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
     // Generate a JWT
-    const token = user.generateAuthToken(); // Method defined on/in Model class.
-    res.status(200).json({ token, user });
+    const token = await user.generateAuthToken(); // Method defined on/in Model class.
+    res.status(200).json({ token,user });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
-
 // User Log out
 export const userLogout= async (req,res)=>{
   console.log("...... ......... .. .. ... ........ ....");
   console.log(req.user);
-  
   try{
-    
   }catch(error){
-    
   }
-
 };
 
 // Create a new user
 export const createNewUser = async (req, res) => {
   try {
-    const { email, username, password, role } = req.body;
-    const user = await User.create({ email, username, password, role });
+    const { firstName,lastName,gender,email, username, password, role } = req.body;
+    const user = await User.create({ firstName,lastName,gender,email, username, password, role });
     const token = await user.generateAuthToken();
     res.json({ user, token });
   } catch (err) {
