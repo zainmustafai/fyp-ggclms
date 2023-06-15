@@ -9,7 +9,9 @@ const adminRouter = express.Router();
 adminRouter.get('/users',authenticationMiddleware,getAllUsers);
 // STUDENTS
 adminRouter.get('/students',authenticationMiddleware,getAllStudents);
+adminRouter.get('/students/:id',authenticationMiddleware,getAllStudents);
 adminRouter.post('/students',authenticationMiddleware,createNewStudent);
+adminRouter.post('/students/:id',authenticationMiddleware,createNewStudent);
 adminRouter.get('/students/:id',()=>{});
 adminRouter.delete('/students/:id',deleteStudentById);
 // TEACHERS

@@ -1,72 +1,63 @@
-// import Course from '../models/course.model.js';
+import Course from "../models/course.model.js";
+import Teacher from "../models/teacher.model.js";
 
-// Create a new course
 export const createNewCourse = async (req, res) => {
-  // This controller must be called by a teacher only.
   try {
-    const {courseCode,title} = req.body;
-    const newCourse = await Course.create({});
-    res.json(newCourse);
+    // Extract the necessary data from the request body
+    const { courseCode, title, courseImage, syllabusFile } = req.body;
+    // Get the ID of the teacher who created the course
+    const teacherId = req.user.id; // Assuming the authenticated user's ID is stored in req.user.id
+    // Create the course
+    const course = new Course({
+      courseCode,
+      title,
+      teachers: [teacherId], // Add the teacher to the "teachers" field
+    });
+
+    // Save the course to the database
+    await course.save();
+
+    // Add the course to the teacher's list of courses
+    const teacher = await Teacher.findById(teacherId);
+    teacher.courses.push(course._id);
+    await teacher.save();
+
+    res
+      .status(201)
+      .json({ success: true, message: "Course created successfully", course });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error(error);
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to create course" });
   }
 };
 
-// Get all courses
-export const getAllCourses = async (req, res) => {
+
+
+// Controller function to add a new teacher to the teachers array in the Course model
+const addTeacherToCourse = async (req, res) => {
+  const { courseId, teacherId } = req.body;
+
   try {
-    const courses = await Course.find();
-    res.json(courses);
+    // Find the course by courseId
+    const course = await Course.findById(courseId);
+
+    // If the course is not found, return an error
+    if (!course) {
+      return res.status(404).json({ error: 'Course not found' });
+    }
+
+    // Add the teacherId to the teachers array in the course
+    course.teachers.push(teacherId);
+
+    // Save the updated course
+    await course.save();
+
+    // Return the updated course
+    return res.json(course);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error adding teacher to course:', error);
+    return res.status(500).json({ error: 'Server error' });
   }
 };
-
-// // Get a course by ID
-// export const getCourseById = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const course = await Course.findById(id);
-//     if (course) {
-//       res.json(course);
-//     } else {
-//       res.status(404).json({ message: 'Course not found' });
-//     }
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
-
-// // Update a course by ID
-// export  const updateCourseById = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const updateData = req.body;
-
-//     const updatedCourse = await Course.findByIdAndUpdate(id, updateData, { new: true });
-
-//     if (updatedCourse) {
-//       res.json(updatedCourse);
-//     } else {
-//       res.status(404).json({ message: 'Course not found' });
-//     }
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
-
-// // Delete a course by ID
-// export  const deleteCourseById = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const deletedCourse = await Course.findByIdAndDelete(id);
-
-//     if (deletedCourse) {
-//       res.json({ message: 'Course deleted successfully' });
-//     } else {
-//       res.status(404).json({ message: 'Course not found' });
-//     }
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
