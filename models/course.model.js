@@ -17,7 +17,7 @@ const courseSchema = new mongoose.Schema({
   presentations: [],
   recommendedReadings: [],
   generalResources: [],
-  Quizzes: [],
+  Quizzes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Quizz"}],
 });
 const Course = mongoose.model("Course", courseSchema);
 export default Course;

@@ -1,7 +1,7 @@
 import Teacher from '../models/teacher.model.js';
 
 // Create a new teacher
-export const createTeacher = async (req, res) => {
+export const createNewTeacher = async (req, res) => {
   try {
     const newTeacher = await Teacher.create(req.body);
     res.json(newTeacher);

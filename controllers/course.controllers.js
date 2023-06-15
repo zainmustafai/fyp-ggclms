@@ -11,12 +11,11 @@ export const createNewCourse = async (req, res) => {
     const course = new Course({
       courseCode,
       title,
-      teachers: [teacherId], // Add the teacher to the "teachers" field
+      teachers: [] // Initialize an empty array for the teachers
     });
-
+    course.teachers.push(teacherId);
     // Save the course to the database
     await course.save();
-
     // Add the course to the teacher's list of courses
     const teacher = await Teacher.findById(teacherId);
     teacher.courses.push(course._id);

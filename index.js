@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
 // ROUTES
 app.use('/api/', userRouter);
 app.use('/api/admin',adminRouter);
-app.use('/api/teacher',teacherRouter);
+app.use('/api/teachers',teacherRouter);
 
 //definition of function to start server
 const startServer = (_port, _app) => {
