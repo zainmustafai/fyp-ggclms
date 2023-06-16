@@ -5,5 +5,5 @@ import { createNewTeacher, getAllTeachers } from '../controllers/teacher.control
 const teacherRouter= express.Router();
 teacherRouter.post('/courses',createNewCourse);
 teacherRouter.get('/',getAllTeachers); //Should be accessible to Only Admins.
-teacherRouter.post('/',createNewTeacher); //Should be accessible to Only Admins.
+teacherRouter.post('/',adminAuthMiddleware,createNewTeacher); //Should be accessible to Only Admins.
 export default teacherRouter;

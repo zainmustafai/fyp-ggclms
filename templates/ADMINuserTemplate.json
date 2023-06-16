@@ -1,0 +1,9 @@
+{
+    "firstName":"Admin",
+    "lastName":"Admin",
+    "email":"admin@lms.com",
+    "role":"Admin",
+    "username":"admin",
+    "password":"admin",
+    "gender":"male"
+}

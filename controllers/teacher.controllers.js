@@ -1,12 +1,7 @@
-import Teacher from '../models/teacher.model.js';
+import Teacher from "../models/teacher.model.js";
 // Create a new teacher
 export const createNewTeacher = async (req, res) => {
-  try {
-    const newTeacher = await Teacher.create(req.body);
-    res.json(newTeacher);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  console.log("CREATING NEW TEACHER>>>")
 };
 // Get all teachers
 export const getAllTeachers = async (req, res) => {
@@ -18,15 +13,15 @@ export const getAllTeachers = async (req, res) => {
   }
 };
 // Get a teacher by ID
+
 export const getTeacherById = async (req, res) => {
   try {
     const { id } = req.params;
     const teacher = await Teacher.findById(id);
-    
     if (teacher) {
       res.json(teacher);
     } else {
-      res.status(404).json({ message: 'Teacher not found' });
+      res.status(404).json({ message: "Teacher not found" });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -38,12 +33,14 @@ export const updateTeacherById = async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
 
-    const updatedTeacher = await Teacher.findByIdAndUpdate(id, updateData, { new: true });
+    const updatedTeacher = await Teacher.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
 
     if (updatedTeacher) {
       res.json(updatedTeacher);
     } else {
-      res.status(404).json({ message: 'Teacher not found' });
+      res.status(404).json({ message: "Teacher not found" });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -57,9 +54,9 @@ export const deleteTeacherById = async (req, res) => {
     const deletedTeacher = await Teacher.findByIdAndDelete(id);
 
     if (deletedTeacher) {
-      res.json({ message: 'Teacher deleted successfully' });
+      res.json({ message: "Teacher deleted successfully" });
     } else {
-      res.status(404).json({ message: 'Teacher not found' });
+      res.status(404).json({ message: "Teacher not found" });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });

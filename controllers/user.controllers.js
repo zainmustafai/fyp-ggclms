@@ -29,9 +29,9 @@ export const userLogout = async (req, res) => {
       return token.token !== tokenToRemove;
     });
     await user.save();
-    res.status(200).json({ message: 'User logged out successfully' });
+    res.status(200).json({ message: "User logged out successfully" });
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error cannot logout.' });
+    res.status(500).json({ error: "Internal server error cannot logout." });
   }
 };
 
