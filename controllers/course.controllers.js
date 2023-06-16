@@ -1,6 +1,5 @@
 import Course from "../models/course.model.js";
 import Teacher from "../models/teacher.model.js";
-
 export const createNewCourse = async (req, res) => {
   try {
     // Extract the necessary data from the request body

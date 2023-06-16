@@ -1,10 +1,8 @@
 import mongoose from "mongoose";
-
 const teacherSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     courses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
 });
-
 const Teacher = mongoose.model('Teacher', teacherSchema);
 export default Teacher;
 
