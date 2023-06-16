@@ -3,15 +3,15 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectToDatabase from './DatabaseConfig/databaseConfig.js';
+dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 8081 || 8082;
+const PORT = process.env.SERVER_PORT || 8081;
 //ROUTERS
 import userRouter from './routes/user.routes.js';
 import adminRouter from './routes/admin.routes.js';
 import teacherRouter from './routes/teacher.routes.js';
 // Configuration of environment variables.
 
-dotenv.config();
 //Middleware
 app.use(express.json());
 app.use(bodyParser.json({
@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
 });
 
 // ROUTES
-app.use('/api/', userRouter);
+app.use('/api/users', userRouter);
 app.use('/api/admin',adminRouter);
 app.use('/api/teachers',teacherRouter);
 

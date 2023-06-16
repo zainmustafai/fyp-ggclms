@@ -3,7 +3,7 @@ import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
 
 export const userLogin = async (req, res) => {
-  console.log("user Login Route Reached")
+  console.log("user Login Route Reached");
   try {
     const { email, password } = req.body;
     // Find the user by username
@@ -14,25 +14,38 @@ export const userLogin = async (req, res) => {
     }
     // Generate a JWT
     const token = await user.generateAuthToken(); // Method defined on/in Model class.
-    res.status(200).json({ token,user });
+    res.status(200).json({ token, user });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 // User Log out
-export const userLogout= async (req,res)=>{
+export const userLogout = async (req, res) => {
   console.log("...... ......... .. .. ... ........ ....");
+  const user = this;
   console.log(req.user);
-  try{
-  }catch(error){
-  }
+  try {
+    user.tokens = user.tokens.filter((token) => {
+      return token.token !== tokenToRemove;
+      return user.save();
+    });
+  } catch (error) {}
 };
 
 // Create a new user
 export const createNewUser = async (req, res) => {
   try {
-    const { firstName,lastName,gender,email, username, password, role } = req.body;
-    const user = await User.create({ firstName,lastName,gender,email, username, password, role });
+    const { firstName, lastName, gender, email, username, password, role } =
+      req.body;
+    const user = await User.create({
+      firstName,
+      lastName,
+      gender,
+      email,
+      username,
+      password,
+      role,
+    });
     const token = await user.generateAuthToken();
     res.json({ user, token });
   } catch (err) {
@@ -42,7 +55,9 @@ export const createNewUser = async (req, res) => {
 
 // Get all users
 export const getAllUsers = async (req, res) => {
-  console.log("GET ALL USERS ROUTE REACHED! THIS MEANS ADMIN IS AUTHENTICATED ");
+  console.log(
+    "GET ALL USERS ROUTE REACHED! THIS MEANS ADMIN IS AUTHENTICATED "
+  );
   try {
     const users = await User.find();
     res.json(users);
@@ -65,7 +80,9 @@ export const getUserById = async (req, res) => {
 // Update a user by ID
 export const updateUserById = async (req, res) => {
   try {
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
     if (!user) throw new Error("User not found");
     res.json(user);
   } catch (err) {
@@ -83,4 +100,3 @@ export const deleteUserById = async (req, res) => {
     res.status(404).json({ error: err.message });
   }
 };
-

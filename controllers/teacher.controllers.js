@@ -1,5 +1,4 @@
 import Teacher from '../models/teacher.model.js';
-
 // Create a new teacher
 export const createNewTeacher = async (req, res) => {
   try {
@@ -9,7 +8,6 @@ export const createNewTeacher = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 // Get all teachers
 export const getAllTeachers = async (req, res) => {
   try {
@@ -19,7 +17,6 @@ export const getAllTeachers = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 // Get a teacher by ID
 export const getTeacherById = async (req, res) => {
   try {
@@ -35,7 +32,6 @@ export const getTeacherById = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 // Update a teacher by ID
 export const updateTeacherById = async (req, res) => {
   try {
