@@ -21,15 +21,18 @@ export const userLogin = async (req, res) => {
 };
 // User Log out
 export const userLogout = async (req, res) => {
-  console.log("...... ......... .. .. ... ........ ....");
-  const user = this;
-  console.log(req.user);
   try {
+    const user = req.user;
+    console.log(req.token);
+    const tokenToRemove = req.token;
     user.tokens = user.tokens.filter((token) => {
       return token.token !== tokenToRemove;
-      return user.save();
     });
-  } catch (error) {}
+    await user.save();
+    res.status(200).json({ message: 'User logged out successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error cannot logout.' });
+  }
 };
 
 // Create a new user

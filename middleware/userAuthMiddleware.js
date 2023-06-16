@@ -5,11 +5,8 @@ import User from "../models/user.model.js";
 const userAuthMiddleware = (req, res, next) => {
   const MY_JWT_SECRET_KEY = process.env.JWT_PRIVATE_KEY;
   const authHeader = req.header("Authorization");
-  console.log(authHeader);
   if (authHeader) {
     const token = authHeader.split(" ")[1];
-    console.log(token);
-    console.log(MY_JWT_SECRET_KEY);
     // Verify the token and check if it represents an admin user
     // Add your token verification and admin check logic here
     try {
