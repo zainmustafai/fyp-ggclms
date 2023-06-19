@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 // const DATABASE_URL = "mongodb+srv://fypggclms:admin@cluster0.lf9nggn.mongodb.net/?retryWrites=true&w=majority"
 //mongodb://localhost:27017
 const connectToDatabase = async () => {
-    const DATABASE_URL = 'mongodb+srv://fypggclms:admin@cluster0.lf9nggn.mongodb.net/?retryWrites=true&w=majority';
+    // const DATABASE_URL = 'mongodb+srv://fypggclms:admin@cluster0.lf9nggn.mongodb.net/?retryWrites=true&w=majority';
+    const DATABASE_URL = 'mongodb://localhost:27017/fypggclms';
     console.log(DATABASE_URL);
     const options = {
         useNewUrlParser: true,

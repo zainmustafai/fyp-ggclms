@@ -10,6 +10,7 @@ const PORT = process.env.SERVER_PORT || 8081;
 import userRouter from './routes/user.routes.js';
 import adminRouter from './routes/admin.routes.js';
 import teacherRouter from './routes/teacher.routes.js';
+import courseRouter from './routes/course.routes.js';
 // Configuration of environment variables.
 
 //Middleware
@@ -30,6 +31,7 @@ app.get('/', (req, res) => {
 app.use('/api/users', userRouter);
 app.use('/api/admin',adminRouter);
 app.use('/api/teachers',teacherRouter);
+app.use('/api/courses',courseRouter);
 
 //definition of function to start server
 const startServer = (_port, _app) => {

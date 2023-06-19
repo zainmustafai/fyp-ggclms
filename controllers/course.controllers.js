@@ -1,24 +1,30 @@
 import Course from "../models/course.model.js";
 import Teacher from "../models/teacher.model.js";
+
 export const createNewCourse = async (req, res) => {
+  console.log(req.teacher);
   try {
     // Extract the necessary data from the request body
     const { courseCode, title, } = req.body;
     // Get the ID of the teacher who created the course
-    const teacherId = req.user.id; // Assuming the authenticated user's ID is stored in req.user.id
+    const teacherUserId = req.user._id; // Assuming the authenticated user's ID is stored in req.user.id
+    console.log("TEACHER USER ID IS : " + teacherUserId);
+    const teacher = await Teacher.findByUserId(teacherUserId);
+    console.log(teacher);
     // Create the course
     const course = new Course({
       courseCode,
       title,
       teachers: [] // Initialize an empty array for the teachers
     });
-    course.teachers.push(teacherId);
+    course.teachers.push(teacher._id);
     // Save the course to the database
     await course.save();
     // Add the course to the teacher's list of courses
-    const teacher = await Teacher.findById(teacherId);
-    teacher.courses.push(course._id);
-    await teacher.save();
+    if (teacher) {
+      teacher.courses.push(course._id);
+      await teacher.save();
+    }
     res
       .status(201)
       .json({ success: true, message: "Course created successfully", course });
@@ -48,5 +54,14 @@ const addTeacherToCourse = async (req, res) => {
   } catch (error) {
     console.error('Error adding teacher to course:', error);
     return res.status(500).json({ error: 'Server error' });
+  }
+};
+
+export const getAllCourses = async (req, res) => {
+  try {
+    const courses = await Course.find().populate();
+    res.status(200).json({ courses });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
