@@ -6,9 +6,7 @@ const courseSchema = new mongoose.Schema({
   enrollments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Enrollment" }],
   teachers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Teacher" }],
   syllabusFile: { type: String },
-  discussionBoard: [
-    { type: mongoose.Schema.Types.ObjectId, ref: "discussionBoard" },
-  ],
+  discussionBoard: { type: mongoose.Schema.Types.ObjectId, ref: "discussionBoard" },
   folders: [{ type: mongoose.Schema.Types.ObjectId }],
   lectureNotes: [],
   labNotes: [],
@@ -17,7 +15,7 @@ const courseSchema = new mongoose.Schema({
   presentations: [],
   recommendedReadings: [],
   generalResources: [],
-  Quizzes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Quizz"}],
+  Quizzes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Quizz" }],
 });
 const Course = mongoose.model("Course", courseSchema);
 export default Course;
