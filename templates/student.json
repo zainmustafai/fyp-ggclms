@@ -1,0 +1,9 @@
+{
+    "firstName":"Student",
+    "lastName":"Student",
+    "email":"student@lms.com",
+    "role":"Student",
+    "username":"student",
+    "password":"student",
+    "gender":"male"
+}
