@@ -97,39 +97,7 @@ export const getAllCourses = async (req, res) => {
 
 /*******************************************************POSTs */
 export const createNewPost = async (req, res) => {
-  try {
-    const { courseId, title, content } = req.body;
-
-    // Find the discussion board for the given courseId
-    const discussionBoard = await DiscussionBoard.findOne({ course: courseId });
-
-    // If the discussion board doesn't exist, return an error
-    if (!discussionBoard) {
-      return res.status(404).json({ error: "Discussion board not found" });
-    }
-
-    // Create a new post
-    const post = new Post({
-      title,
-      content,
-      author: req.user._id, // Assuming the authenticated user's ID is stored in req.user._id
-      course: courseId,
-    });
-
-    // Save the post to the database
-    await post.save();
-
-    // Add the post to the discussion board's posts array
-    discussionBoard.posts.push(post._id);
-    await discussionBoard.save();
-
-    res
-      .status(201)
-      .json({ success: true, message: "Post created successfully", post });
-  } catch (error) {
-    console.error("Error creating post:", error);
-    res.status(500).json({ success: false, message: "Failed to create post" });
-  }
+  console.log("Create new post route reached!");
 };
 
 export const getAllPosts = async (req, res) => {

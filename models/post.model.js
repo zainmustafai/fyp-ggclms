@@ -14,7 +14,6 @@ const postSchema = new mongoose.Schema({
     // Other Discussion Post fields as per your requirements
 });
 
-
 //following is a function that checks whether a user can delete the post or not.
 postSchema.methods.canDelete = function (userRole) {
     // Define the roles that can delete the post (Teacher, Author, Admin)
