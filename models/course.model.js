@@ -17,8 +17,6 @@ const courseSchema = new mongoose.Schema({
   generalResources: [],
   Quizzes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Quizz" }],
 });
-const Course = mongoose.model("Course", courseSchema);
-export default Course;
 
 // USER DEFINED METHODS
 // **************************FIND COURSE BY CourseCode.
@@ -45,3 +43,6 @@ courseSchema.methods.addInstructor = async function (instructorId) {
     throw error;
   }
 };
+
+const Course = mongoose.model("Course", courseSchema);
+export default Course;

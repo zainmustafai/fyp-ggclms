@@ -7,7 +7,7 @@ const studentSchema = new mongoose.Schema(
         quizzesTaken: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Quizz' }],
         assignmentSubmitted: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Assignment' }],
         discussionPosts: [{}],
-        enrolledCourses:[{}],
+        enrollments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Enrollment" }],
     }, {
     timestamps: true,
 }
