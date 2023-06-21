@@ -1,5 +1,6 @@
 import Teacher from "../models/teacher.model.js";
 import User from "../models/user.model.js";
+
 // Create a new teacher
 export const createNewTeacher = async (req, res) => {
   console.log("CREATING NEW TEACHER>>>");
@@ -14,7 +15,7 @@ export const createNewTeacher = async (req, res) => {
       username,
       email,
       password,
-      role: 'Teacher', // NOTE: Role is not gotten from req.body;
+      role: "Teacher", // NOTE: Role is not gotten from req.body;
     });
     // Save the user
     await user.save();
@@ -24,22 +25,21 @@ export const createNewTeacher = async (req, res) => {
     });
     // Save the teacher
     await teacher.save();
-    res.status(201).json({ message: 'Teacher created successfully' });
+    res.status(201).json({ message: "Teacher created successfully" });
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 // Get all teachers
 export const getAllTeachers = async (req, res) => {
   try {
-    const teachers = await Teacher.find().populate('user');
+    const teachers = await Teacher.find().populate("user");
     res.status(200).json({ teachers });
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 // Get a teacher by ID
-
 export const getTeacherById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -96,3 +96,10 @@ updateTeacherById: Updates a teacher based on the provided ID in the request par
 deleteTeacherById: Deletes a teacher based on the provided ID in the request parameters. If the deletion is successful, it sends a success message as the response. If the teacher is not found, it sends a 404 error.
 
  */
+
+export const getTeachersAllCourses = (req, res) => {
+  const teacherID = req.teacher._id;
+  try {
+    console.log(teacherID);
+  } catch (e) {}
+};

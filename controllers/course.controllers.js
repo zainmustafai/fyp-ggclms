@@ -27,7 +27,6 @@ export const createNewCourse = async (req, res) => {
       teacher.courses.push(course._id);
       await teacher.save();
     }
-
     // Create a discussion board for the course
     const discussionBoard = new DiscussionBoard({
       course: course._id,

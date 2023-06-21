@@ -16,5 +16,4 @@ courseRouter.post('/:id/posts',postAuthMiddleware,createNewPost);
 courseRouter.get('/:id/enrollments',teacherAuthMiddleware,getAllEnrollments);
 courseRouter.post('/:id/enrollments',teacherAuthMiddleware,createNewEnrollment);
 
-
 export default courseRouter;

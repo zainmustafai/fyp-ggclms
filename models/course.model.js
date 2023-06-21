@@ -17,7 +17,6 @@ const courseSchema = new mongoose.Schema({
   generalResources: [],
   Quizzes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Quizz" }],
 });
-
 // USER DEFINED METHODS
 // **************************FIND COURSE BY CourseCode.
 courseSchema.statics.findByCourseCode = async function (courseCode) {
