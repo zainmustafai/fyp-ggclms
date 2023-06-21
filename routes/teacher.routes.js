@@ -7,6 +7,7 @@ const teacherRouter= express.Router();
 
 teacherRouter.get('/',getAllTeachers); //Should be accessible to Only Admins.
 teacherRouter.get('/:id/',adminAuthMiddleware,getTeacherById);
+teacherRouter.get('/:id/',adminAuthMiddleware,getTeacherById);
 teacherRouter.post('/courses',createNewCourse);
 teacherRouter.get('/courses',teacherAuthMiddleware, getTeachersAllCourses  );
 teacherRouter.post('/',adminAuthMiddleware,createNewTeacher); //Should be accessible to Only Admins.
