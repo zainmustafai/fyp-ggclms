@@ -4,7 +4,7 @@ import User from "../models/user.model.js";
 export const getAllStudents = async (req, res) => {
   console.log("GET ALL STUDENTS ROUTE HAS REACHED.");
   try {
-    const students = await Student.find().populate("quizzesTaken");
+    const students = await Student.find().populate();
     console.log(students);
     res.status(200).json(students);
   } catch (err) {
@@ -18,11 +18,10 @@ export const createNewStudent = async (req, res) => {
  const {firstName,lastName, email, username, password, gender, } = req.body;
   try {
     const user = new User({firstName,lastName, email,username, password, gender, role:"Student"});
+    user.save();
     console.log(user);
     const studentData = {
-      user: user._id,
-      quizzesTaken: [],
-      assignmentSubmitted: [],
+      user: user._id
     };
     const student = await Student.create(studentData);
     res.status(201).json(student);

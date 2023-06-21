@@ -3,7 +3,7 @@ import User from "./user.model.js";
 
 const studentSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true, unique: true },
     quizzesTaken: [{ type: mongoose.Schema.Types.ObjectId, ref: "Quizz" }],
     assignmentSubmitted: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Assignment" },
