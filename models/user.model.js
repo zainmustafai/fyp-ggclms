@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Student from "./student.model.js";
 import noSpaceValidator from "./validators/nospaceValidator.js";
+import cloudinary from "cloudinary";
 
 const { Schema } = mongoose;
 
@@ -71,6 +72,8 @@ const userSchema = new Schema({
     },
   ],
 });
+
+//**********************************************SCHEMA METHODS************************************************************************************************************* */
 // HASHING PASSWORD:
 userSchema.pre("save", async function (next) {
   const user = this;
@@ -83,12 +86,14 @@ userSchema.pre("save", async function (next) {
       console.log("GENERATING SALT....");
       const salt = await bcrypt.genSalt();
       user.password = await bcrypt.hash(normalPassword, salt);
-    }
+    };
     next();
   } catch (err) {
     next(err);
   }
 });
+
+/*********************************************************************************************************************************************************************************** */
 
 // MAKE SURE DELETE THE USER AS WELL WHEN STUDENT IS DELETED CORRESPONDINGLY.
 userSchema.pre("remove", async function (next) {
@@ -124,7 +129,7 @@ instance of the User model when you call user.myCustomMethod().
 
 * 
 */
-
+//GENERATE AUTH TOKEN.
 userSchema.methods.generateAuthToken = async function () {
   console.log("GENERATING AUTH TOKEN...");
   const user = this; // refers to the user instance.
@@ -151,7 +156,7 @@ userSchema.statics.findUserByCredentials = async (email, password) => {
     throw new Error("Error 404 user not found");
   }
   // compare password with hash
-  const isMatch = await bcrypt.compare(password, user.password);
+  const isMatch = await bcrypt.compare(password, user.password); // compare the password with the hash.
   if (!isMatch) {
     throw new Error("Error happened! ");
   }

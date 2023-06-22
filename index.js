@@ -3,16 +3,23 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectToDatabase from "./DatabaseConfig/databaseConfig.js";
-dotenv.config();
-const app = express();
-const PORT = process.env.SERVER_PORT || 8081;
-//ROUTERS
 import userRouter from "./routes/user.routes.js";
 import adminRouter from "./routes/admin.routes.js";
 import teacherRouter from "./routes/teacher.routes.js";
 import courseRouter from "./routes/course.routes.js";
-// Configuration of environment variables.
+import cloudinary from "cloudinary";
 
+// Configuration of environment variables.
+dotenv.config();
+// CLOUDINARY CONFIGURATION
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+const app = express();
+const PORT = process.env.SERVER_PORT || 8081;
 //Middleware
 app.use(express.json());
 app.use(
