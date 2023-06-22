@@ -93,4 +93,16 @@ export const getAllCourses = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+export const getCoursesByTeacherId = async (req, res) => {
+  console.log("Getting Courses for : --", req.user);
+  const userId = req.user._id;
+  try {
+    const teacher = await Teacher.findByUserId(userId);
+    console.log(teacher.courses);
+    const courses = teacher.courses;
+    res.status(200).json(courses);
+  } catch (err) {
+
+  }
+};
 

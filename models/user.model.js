@@ -2,18 +2,57 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Student from "./student.model.js";
+import noSpaceValidator from "./validators/nospaceValidator.js";
 
-const userSchema = new mongoose.Schema({
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  gender: { type: String, enum: ["male", "female", "other"], required: true },
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+const { Schema } = mongoose;
+
+const userSchema = new Schema({
+  profileImage: {
+    type: String,
+  },
+  firstName: {
+    type: String,
+    required: [true, "First name is required."],
+    maxlength: [20, "First name cannot exceed 20 characters."],
+    minlength: [2, "First name should have at least 2 characters."],
+  },
+  lastName: {
+    type: String,
+    required: [true, "Last name is required."],
+  },
+  gender: {
+    type: String,
+    enum: ["male", "female", "other"],
+    required: [true, "Gender is required."],
+  },
+  username: {
+    type: String,
+    required: [true, "Username is required."],
+    unique: true,
+    validate: {
+      validator: noSpaceValidator,
+      message: "Spaces are not allowed in the username field.",
+    },
+  },
+  email: {
+    type: String,
+    required: [true, "Email is required."],
+    unique: true,
+    validate: {
+      validator: function (value) {
+        return !/\s/.test(value);
+      },
+      message: "Spaces are not allowed in the email field.",
+    },
+  },
+  password: {
+    type: String,
+    required: [true, "Password is required."],
+  },
   role: {
     type: String,
     enum: ["Student", "Teacher", "Admin"],
-    required: true,
+    required: [true, "Role is required."],
     default: "Student",
   },
   profile: {

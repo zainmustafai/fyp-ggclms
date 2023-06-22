@@ -62,7 +62,7 @@ export const getAllUsers = async (req, res) => {
     "GET ALL USERS ROUTE REACHED! THIS MEANS ADMIN IS AUTHENTICATED "
   );
   try {
-    const users = await User.find();
+    const users = await User.find().populate("profile");
     res.json(users);
   } catch (err) {
     res.status(500).json({ error: err.message });

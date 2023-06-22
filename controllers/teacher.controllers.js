@@ -25,6 +25,9 @@ export const createNewTeacher = async (req, res) => {
     });
     // Save the teacher
     await teacher.save();
+    // CONNECT USER AND TEACHER IN BOTH WAYS.
+    user.profile = teacher._id;
+    await user.save()
     res.status(201).json({ message: "Teacher created successfully" });
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
@@ -43,7 +46,7 @@ export const getAllTeachers = async (req, res) => {
 export const getTeacherById = async (req, res) => {
   try {
     const { id } = req.params;
-    const teacher = await Teacher.findById(id);
+    const teacher = await Teacher.findById(id).populate();
     if (teacher) {
       res.json(teacher);
     } else {
