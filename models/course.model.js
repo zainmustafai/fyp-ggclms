@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 const courseSchema = new mongoose.Schema({
   courseCode: { type: String, required: true, unique: true },
   title: { type: String, required: true, default: "NEW COURSE" },
-  courseImage: { type: String },
+  displayImage: { type: String },
+  coverImage: { type: String },
   enrollments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Enrollment" }],
   teachers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Teacher" }],
   syllabusFile: { type: String },

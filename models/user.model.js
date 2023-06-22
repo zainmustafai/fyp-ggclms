@@ -10,6 +10,9 @@ const userSchema = new Schema({
   profileImage: {
     type: String,
   },
+  coverImage: {
+    type: String,
+  },
   firstName: {
     type: String,
     required: [true, "First name is required."],

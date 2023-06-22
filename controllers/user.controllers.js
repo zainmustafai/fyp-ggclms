@@ -56,6 +56,16 @@ export const createNewUser = async (req, res) => {
   }
 };
 
+const updateProfilePictureById= async (req,res)=>{
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) throw new Error("User not found");
+    res.json(user);
+  } catch (err) {
+    res.status(404).json({ error: err.message });
+  }
+};
+
 // Get all users
 export const getAllUsers = async (req, res) => {
   console.log(
