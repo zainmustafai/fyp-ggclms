@@ -22,10 +22,11 @@ export const userLogin = async (req, res) => {
 // User Log out
 export const userLogout = async (req, res) => {
   try {
-    const user = req.user;
-    console.log(req.token);
+    const user = await User.findById(req.user._id); // req.user is coming from the middleware.
+    console.log(user);
     const tokenToRemove = req.token;
     user.tokens = user.tokens.filter((token) => {
+      console.log(token.token);
       return token.token !== tokenToRemove;
     });
     await user.save();
@@ -111,4 +112,12 @@ export const deleteUserById = async (req, res) => {
   } catch (err) {
     res.status(404).json({ error: err.message });
   }
+};
+
+//logoutALLDevices
+export const logoutAllDevices = async (req, res) => {
+  const requester = req.user;
+  const user = await User.findByIdAndUpdate({ _id: requester._id }, { tokens: []});
+  console.log(user);
+  res.status(200).json({ message: "Logged out from all devices" });
 };

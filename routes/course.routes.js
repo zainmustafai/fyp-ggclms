@@ -6,7 +6,7 @@ import { createNewPost, getAllPosts } from "../controllers/post.controllers.js";
 import { createNewEnrollment, getAllEnrollments } from "../controllers/enrollment.controllers.js";
 
 const courseRouter = Router();
-courseRouter.post('/',teacherAuthMiddleware ,createNewCourse);
+courseRouter.post('/',teacherAuthMiddleware,createNewCourse);
 courseRouter.get('/',getAllCourses);
 courseRouter.get('/:id',getCourseById);
 // POSTS
@@ -17,3 +17,4 @@ courseRouter.get('/:id/enrollments',teacherAuthMiddleware,getAllEnrollments);
 courseRouter.post('/:id/enrollments',teacherAuthMiddleware,createNewEnrollment);
 
 export default courseRouter;
+

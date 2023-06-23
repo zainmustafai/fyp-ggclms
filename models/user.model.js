@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Student from "./student.model.js";
 import noSpaceValidator from "./validators/nospaceValidator.js";
-import cloudinary from "cloudinary";
 
 const { Schema } = mongoose;
 
@@ -68,10 +67,11 @@ const userSchema = new Schema({
       token: {
         type: String,
         required: true,
+        signedAt: Date.now(),
       },
     },
   ],
-});
+}, { timestamps: true });
 
 //**********************************************SCHEMA METHODS************************************************************************************************************* */
 // HASHING PASSWORD:
@@ -138,11 +138,11 @@ userSchema.methods.generateAuthToken = async function () {
     { _id: user._id.toString(), role: user.role.toString() },
     privateKey,
     {
-      expiresIn: "136h", // Set the token expiration time as per your requirements
+      expiresIn: "1d", // Set the token expiration time as per your requirements
     }
   ); //get the private key from the config file -> environment variable
   user.tokens = user.tokens.concat({ token }); // concatinate the new token into user's tokens list/array.
-  await user.save();
+  await user.save(); // save the user.
   return token;
 };
 

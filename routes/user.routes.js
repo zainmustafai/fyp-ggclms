@@ -3,6 +3,7 @@ import {
   createNewUser,
   deleteUserById,
   getAllUsers,
+  logoutAllDevices,
   userLogin,
   userLogout,
 } from "../controllers/user.controllers.js";
@@ -15,4 +16,5 @@ userRouter.post("/logout", userAuthMiddleware, userLogout);
 userRouter.get("/", adminAuthMiddleware, getAllUsers);
 userRouter.post("/", createNewUser);
 userRouter.delete("/:id",adminAuthMiddleware, deleteUserById);
+userRouter.post('/logoutall',userAuthMiddleware,logoutAllDevices);
 export default userRouter;
