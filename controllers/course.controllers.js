@@ -5,50 +5,51 @@ import Post from "../models/post.model.js";
 
 export const createNewCourse = async (req, res) => {
   console.log(req.teacher);
-  try {
-    // Extract the necessary data from the request body
-    const { courseCode, title } = req.body;
-    // Get the ID of the teacher who created the course
-    const teacherUserId = req.user._id; // Assuming the authenticated user's ID is stored in req.user.id
-    console.log("TEACHER USER ID IS : " + teacherUserId);
-    const teacher = await Teacher.findByUserId(teacherUserId);
-    console.log(teacher);
-    // Create the course
-    const course = new Course({
-      courseCode,
-      title,
-      teachers: [], // Initialize an empty array for the teachers
-    });
-    course.teachers.push(teacher._id);
-    // Save the course to the database
-    await course.save();
-    // Add the course to the teacher's list of courses
-    if (teacher) {
-      teacher.courses.push(course._id);
-      await teacher.save();
-    }
-    // Create a discussion board for the course
-    const discussionBoard = new DiscussionBoard({
-      course: course._id,
-      posts: [], // Initialize an empty array for the posts
-    });
+  console.log(req.body.courseCode);
+  // try {
+  //   // Extract the necessary data from the request body
+  //   const { courseCode, title } = req.body;
+  //   // Get the ID of the teacher who created the course
+  //   const teacherUserId = req.user._id; // Assuming the authenticated user's ID is stored in req.user.id
+  //   console.log("TEACHER USER ID IS : " + teacherUserId);
+  //   const teacher = await Teacher.findByUserId(teacherUserId);
+  //   console.log(teacher);
+  //   // Create the course
+  //   const course = new Course({
+  //     courseCode,
+  //     title,
+  //     teachers: [], // Initialize an empty array for the teachers
+  //   });
+  //   course.teachers.push(teacher._id);
+  //   // Save the course to the database
+  //   await course.save();
+  //   // Add the course to the teacher's list of courses
+  //   if (teacher) {
+  //     teacher.courses.push(course._id);
+  //     await teacher.save();
+  //   }
+  //   // Create a discussion board for the course
+  //   const discussionBoard = new DiscussionBoard({
+  //     course: course._id,
+  //     posts: [], // Initialize an empty array for the posts
+  //   });
 
-    // Save the discussion board to the database
-    await discussionBoard.save();
+  //   // Save the discussion board to the database
+  //   await discussionBoard.save();
 
-    // Update the course with the discussion board's ID
-    course.discussionBoard = discussionBoard._id;
-    await course.save();
+  //   // Update the course with the discussion board's ID
+  //   course.discussionBoard = discussionBoard._id;
+  //   await course.save();
 
-    res
-      .status(201)
-      .json({ success: true, message: "Course created successfully", course });
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ success: false, message: "Failed to create course" });
-  }
+  //   res
+  //     .status(201)
+  //     .json({ success: true, message: "Course created successfully", course });
+  // } catch (error) {
+  //   console.error(error);
+  //   res
+  //     .status(500)
+  //     .json({ success: false, message: "Failed to create course" });
+  // }
 };
 // Controller function to add a new teacher to the teachers array in the Course model
 const addTeacherToCourse = async (req, res) => {
