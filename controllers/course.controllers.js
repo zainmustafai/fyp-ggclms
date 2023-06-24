@@ -2,7 +2,7 @@ import Course from "../models/course.model.js";
 import Teacher from "../models/teacher.model.js";
 import DiscussionBoard from "../models/discussionBoard.model.js";
 import Post from "../models/post.model.js";
-
+import { v2 as cloudinary } from 'cloudinary';
 export const createNewCourse = async (req, res) => {
   console.log(req.body);
   try {
@@ -107,4 +107,72 @@ export const getCoursesByTeacherId = async (req, res) => {
 
   }
 };
+// CONTROLLER FOR UPDATING SYLLABUS FILE;
+export const updateSyllabus = async (req, res) => {
+  try {
+    // Find the course by ID
+    const course = await Course.findById(req.params.id);
+    // If the course doesn't exist, return an error
+    if (!course) {
+      return res.status(404).json({ error: 'Course not found' });
+    }
 
+    const fileName = `${course.courseCode}_${course.title}_syllabus_${req.file.originalname}`;
+    // Upload the file to Cloudinary.
+    const result = await cloudinary.uploader.upload(req.file.path.toString(), {
+      public_id: fileName,
+      resource_type: 'raw',
+      pages: true,
+    });
+
+    // Store the file information in the syllabusFile field of the Course document
+    course.syllabusFile = {
+      filename: result.original_filename,
+      publicId: result.public_id,
+      url: result.secure_url,
+      asset_id: result.asset_id,
+    };
+    // Save the updated course document
+    //await course.save();
+
+    // Return the updated course
+    res.status(200).json({ message: 'Course syllabus updated', course });
+  } catch (error) {
+    console.error('Error updating course syllabus:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+// 
+export const downloadCourseSyllabus = async (req, res) => {
+  console.log("Downloading Syllabus");
+  try {
+    const courseId = req.params.id;
+    // Find the course by ID
+    const course = await Course.findById(courseId);
+    // If the course doesn't exist, return an error
+    if (!course) {
+      return res.status(404).json({ error: 'Course not found' });
+    }
+    console.log('Course found');
+    const asset_id = course.syllabusFile.asset_id;
+    console.log(asset_id);
+
+    cloudinary.config({
+      cloud_name: 'dqceqzjjv',
+      api_key: '168676738987823',
+      api_secret: 'wngWUjqE5tMIGdnuGBkRO5ss3Rk',
+      secure: true,
+    });
+    // Download the file from Cloudinary
+    cloudinary.api
+      .resource_by_asset_id([`216b4c63d75f00b3db37e01e3d2f6a18`])
+      .then(console.log).then((result) => {
+        console.log(result);
+        res.status(200).json({ message: 'Course syllabus downloaded', result });
+      });
+  } catch (error) {
+    console.error('Error downloading course:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};

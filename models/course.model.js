@@ -7,7 +7,12 @@ const courseSchema = new mongoose.Schema({
   coverImage: { type: String },
   enrollments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Enrollment" }],
   teachers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Teacher" }],
-  syllabusFile: { type: String },
+  syllabusFile: {
+    filename: { type: String },
+    publicId: { type: String },
+    url: { type: String },
+    asset_id: { type: String },
+  },
   discussionBoard: { type: mongoose.Schema.Types.ObjectId, ref: "discussionBoard" },
   folders: [{ type: mongoose.Schema.Types.ObjectId }],
   lectureNotes: [],
