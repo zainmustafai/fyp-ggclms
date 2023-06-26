@@ -2,6 +2,7 @@ import Course from "../models/course.model.js";
 import Teacher from "../models/teacher.model.js";
 import DiscussionBoard from "../models/discussionBoard.model.js";
 import { v2 as cloudinary } from 'cloudinary';
+import streamifier from 'streamifier' // convert buffer to stream
 export const createNewCourse = async (req, res) => {
   console.log(req.body);
   try {
@@ -114,27 +115,21 @@ export const updateSyllabus = async (req, res) => {
     if (!course) {
       return res.status(404).json({ error: 'Course not found' });
     }
-
-    const fileName = `${course.courseCode}_${course.title}_syllabus_${req.file.originalname}`;
-    // Upload the file to Cloudinary.
-    const result = await cloudinary.uploader.upload(req.file.path.toString(), {
-      public_id: fileName,
+    const stream = streamifier.createReadStream(req.file.buffer);
+    console.log("Stream is : ", stream);
+    cloudinary.uploader.upload_stream({
       resource_type: 'raw',
       folder: course.courseCode.toString(),
-      pages: true,
-    });
+    }, function(error, result) {
+      if(result){
+        res.status(200).json({ message: 'Course syllabus updated', result });
+      }
+      else if(error){
+        res.status(500).json({ error: 'Internal server error: Exception Caught in updateSyllabus' });
+      }
+      // console.log(result, error);
+    }).end(req.file.buffer);
 
-    // Store the file information in the syllabusFile field of the Course document
-    course.syllabusFile = {
-      filename: result.original_filename,
-      publicId: result.public_id,
-      url: result.secure_url,
-      asset_id: result.asset_id,
-    };
-    // Save the updated course document
-    //await course.save();
-
-    // Return the updated course
     res.status(200).json({ message: 'Course syllabus updated', course });
   } catch (error) {
     console.error('Error updating course syllabus:', error);

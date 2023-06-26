@@ -18,14 +18,15 @@ import { CloudinaryStorage } from "multer-storage-cloudinary"; //FOR ME: MUST RE
 import { v2 as cloudinary } from "cloudinary";
 
 // Storage for the uploaded files
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: (req,file)=>req.params.id
-  },
-});
+// const storage = new CloudinaryStorage({
+//   cloudinary: cloudinary,
+//   params: {
+//     // folder: 'courses'
+//   },
+// });
 
-const upload = multer();
+// const upload = multer({ storage: storage });
+const upload = multer({ storage: multer.memoryStorage() });
 
 const courseRouter = Router();
 courseRouter.post("/", teacherAuthMiddleware, createNewCourse);
