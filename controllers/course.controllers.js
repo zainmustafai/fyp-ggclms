@@ -1,7 +1,6 @@
 import Course from "../models/course.model.js";
 import Teacher from "../models/teacher.model.js";
 import DiscussionBoard from "../models/discussionBoard.model.js";
-import Post from "../models/post.model.js";
 import { v2 as cloudinary } from 'cloudinary';
 export const createNewCourse = async (req, res) => {
   console.log(req.body);
@@ -100,11 +99,10 @@ export const getCoursesByTeacherId = async (req, res) => {
   const userId = req.user._id;
   try {
     const teacher = await Teacher.findByUserId(userId);
-    console.log(teacher.courses);
     const courses = teacher.courses;
     res.status(200).json(courses);
   } catch (err) {
-
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 // CONTROLLER FOR UPDATING SYLLABUS FILE;
@@ -122,6 +120,7 @@ export const updateSyllabus = async (req, res) => {
     const result = await cloudinary.uploader.upload(req.file.path.toString(), {
       public_id: fileName,
       resource_type: 'raw',
+      folder: course.courseCode.toString(),
       pages: true,
     });
 
@@ -139,7 +138,7 @@ export const updateSyllabus = async (req, res) => {
     res.status(200).json({ message: 'Course syllabus updated', course });
   } catch (error) {
     console.error('Error updating course syllabus:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error: Exception Caught in updateSyllabus' });
   }
 };
 

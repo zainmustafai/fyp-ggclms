@@ -23,7 +23,7 @@ cloudinary.v2.config({
   cloud_name: 'dqceqzjjv',
   api_key: '168676738987823',
   api_secret: 'wngWUjqE5tMIGdnuGBkRO5ss3Rk',
-  // secure: true,
+  secure: true,
 });
 
 const app = express();
