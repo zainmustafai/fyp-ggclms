@@ -66,10 +66,8 @@ const userSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       refPath: "role",
     },
-    createdAt: {
-      type: Date,
-      default: Date.now(),
-    },
+    createdAt: { type: Date, default: new Date().toISOString() },
+    updatedAt: { type: Date, default: new Date().toISOString() },
     tokens: [
       {
         token: {

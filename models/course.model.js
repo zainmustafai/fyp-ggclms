@@ -13,16 +13,75 @@ const courseSchema = new mongoose.Schema({
     url: { type: String },
     asset_id: { type: String },
   },
-  discussionBoard: { type: mongoose.Schema.Types.ObjectId, ref: "discussionBoard" },
+  discussionBoard: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "discussionBoard",
+  },
   folders: [{ type: mongoose.Schema.Types.ObjectId }],
-  lectureNotes: [],
-  labNotes: [],
-  homework: [],
-  project: {},
-  presentations: [],
-  recommendedReadings: [],
-  generalResources: [],
-  Quizzes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Quizz" }],
+  lectureNotes: [
+    {
+      filename: { type: String },
+      publicId: { type: String },
+      url: { type: String },
+      asset_id: { type: String },
+    },
+  ],
+  labNotes: [
+    {
+      filename: { type: String },
+      publicId: { type: String },
+      url: { type: String },
+      asset_id: { type: String },
+    },
+  ],
+  homework: [
+    {
+      filename: { type: String },
+      publicId: { type: String },
+      url: { type: String },
+      asset_id: { type: String },
+    },
+  ],
+  project: {
+    filename: { type: String },
+    publicId: { type: String },
+    url: { type: String },
+    asset_id: { type: String },
+  },
+  presentations: [
+    {
+      filename: { type: String },
+      publicId: { type: String },
+      url: { type: String },
+      asset_id: { type: String },
+    },
+  ],
+  recommendedReadings: [
+    {
+      filename: { type: String },
+      publicId: { type: String },
+      url: { type: String },
+      asset_id: { type: String },
+    },
+  ],
+  generalResources: [
+    {
+      filename: { type: String },
+      publicId: { type: String },
+      url: { type: String },
+      asset_id: { type: String },
+    },
+  ],
+  Quizzes: [
+    {
+      filename: { type: String },
+      publicId: { type: String },
+      url: { type: String },
+      asset_id: { type: String },
+    },
+  ],
+  createdAt: { type: Date, default: new Date().toISOString() },
+  updatedAt: { type: Date, default: new Date().toISOString() },
 });
 // USER DEFINED METHODS
 // **************************FIND COURSE BY CourseCode.

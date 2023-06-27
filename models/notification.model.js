@@ -1,18 +1,23 @@
-import mongoose from "mongoose"; 
-const notificationSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  content: { type: String, required: true },
-  type: { type: String },
-  sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  receiver: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  timestamp: { type: Date, default: Date.now },
-  readStatus: { type: Boolean, default: false },
-  link: { type: String },
-  importanceLevel: { type: String },
-  course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },
-},{timestamps:true});
+import mongoose from "mongoose";
+const notificationSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true },
+    content: { type: String, required: true },
+    type: { type: String },
+    sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    receiver: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    timestamp: { type: Date, default: Date.now },
+    readStatus: { type: Boolean, default: false },
+    link: { type: String },
+    importanceLevel: { type: String },
+    course: { type: mongoose.Schema.Types.ObjectId, ref: "Course" },
+    createdAt: { type: Date, default: new Date().toISOString() },
+    updatedAt: { type: Date, default: new Date().toISOString() },
+  },
+  { timestamps: true }
+);
 
-const Notification = mongoose.model('Notification', notificationSchema);
+const Notification = mongoose.model("Notification", notificationSchema);
 
 export default Notification;
 

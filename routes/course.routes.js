@@ -14,15 +14,14 @@ import {
   getAllEnrollments,
 } from "../controllers/enrollment.controllers.js";
 import multer from "multer";
-import { CloudinaryStorage } from "multer-storage-cloudinary"; //FOR ME: MUST RESEARCH ABOUT IT.
-import { v2 as cloudinary } from "cloudinary";
+// import { CloudinaryStorage } from "multer-storage-cloudinary"; //FOR ME: MUST RESEARCH ABOUT IT.
+// import { v2 as cloudinary } from "cloudinary";
 
 // Storage for the uploaded files
 //  
 
 // const upload = multer({ storage: storage });
-const upload = multer({ storage: multer.memoryStorage() });
-
+const upload = multer({ dest: 'tempfiles/' });
 const courseRouter = Router();
 courseRouter.post("/", teacherAuthMiddleware, createNewCourse);
 courseRouter.get("/", getAllCourses);
@@ -42,9 +41,10 @@ courseRouter.post(
 /**************************************************ROUTES FOR UPDATING COURSES ********************************************** */
 //*---------------- */ Course Syllabus
 courseRouter.put(
-  "/:id/syllabus",
+  "/:id/syllabus", teacherAuthMiddleware,
   upload.single("syllabusFile"),
   updateSyllabus
 );
+
 
 export default courseRouter;

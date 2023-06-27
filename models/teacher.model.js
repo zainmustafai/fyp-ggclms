@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 const teacherSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
+  createdAt: { type: Date, default: new Date().toISOString() },
+  updatedAt: { type: Date, default: new Date().toISOString() },
 });
 teacherSchema.statics.findByUserId = async function (userId) {
   try {
@@ -24,7 +26,7 @@ teacherSchema.statics.findByUserId = async function (userId) {
 };
 
 teacherSchema.methods.hasCourse = function (courseId) {
-  return this.courses.some(course => course.equals(courseId));
+  return this.courses.some((course) => course.equals(courseId));
 };
 //
 teacherSchema.methods.canDelete = function (userRole) {

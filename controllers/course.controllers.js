@@ -1,8 +1,10 @@
 import Course from "../models/course.model.js";
 import Teacher from "../models/teacher.model.js";
 import DiscussionBoard from "../models/discussionBoard.model.js";
-import { v2 as cloudinary } from 'cloudinary';
-import streamifier from 'streamifier' // convert buffer to stream
+import { v2 as cloudinary } from "cloudinary";
+import streamifier from "streamifier"; // convert buffer to stream
+import fs from "fs";
+
 export const createNewCourse = async (req, res) => {
   console.log(req.body);
   try {
@@ -50,7 +52,6 @@ export const createNewCourse = async (req, res) => {
       .status(500)
       .json({ success: false, message: "Failed to create course" });
   }
-
 };
 // Controller function to add a new teacher to the teachers array in the Course model
 const addTeacherToCourse = async (req, res) => {
@@ -109,35 +110,60 @@ export const getCoursesByTeacherId = async (req, res) => {
 // CONTROLLER FOR UPDATING SYLLABUS FILE;
 export const updateSyllabus = async (req, res) => {
   try {
+    const file = req.file;
     // Find the course by ID
     const course = await Course.findById(req.params.id);
     // If the course doesn't exist, return an error
     if (!course) {
-      return res.status(404).json({ error: 'Course not found' });
+      return res.status(404).json({ error: "Course not found" });
     }
-    const stream = streamifier.createReadStream(req.file.buffer);
-    console.log("Stream is : ", stream);
-    cloudinary.uploader.upload_stream({
-      resource_type: 'raw',
-      folder: course.courseCode.toString(),
-    }, function(error, result) {
-      if(result){
-        res.status(200).json({ message: 'Course syllabus updated', result });
+    console.log(req.file);
+    const fileName = course.courseCode.toString() + "_syllabus"; // SET RELEVANTFILENAME
+    const folderName = course.courseCode.toString() + course.title.toString();
+    // UPLOAD FILE TO CLOUDINARY
+    const result = await cloudinary.uploader.upload(
+      file.path,
+      {
+        public_id: fileName,
+        folder: folderName,
+        overwrite: true,
+        resource_type: "auto", // otherwise .pdf extension will be removed.
+        pages: true,
+      },
+      function (error, result) {
+        console.log(result);
       }
-      else if(error){
-        res.status(500).json({ error: 'Internal server error: Exception Caught in updateSyllabus' });
+    );
+    if (result) {
+      course.syllabusFile = {
+        filename: result.original_filename,
+        url: result.url,
+        publicId: result.public_id,
+        asset_id: result.asset_id,
+      };
+      course.save();
+    }
+    // DELETE FILE AFTER UPLOADING TO CLOUDINARY.
+    fs.unlink(req.file.path, (err) => {
+      if (err) {
+        console.log(err);
       }
-      // console.log(result, error);
-    }).end(req.file.buffer);
-
-    res.status(200).json({ message: 'Course syllabus updated', course });
+    });
+    res.status(200).json({ message: "Course syllabus updated", course });
   } catch (error) {
-    console.error('Error updating course syllabus:', error);
-    res.status(500).json({ error: 'Internal server error: Exception Caught in updateSyllabus' });
+    console.error("Error updating course syllabus:", error);
+    fs.unlink(req.file.path, (err) => {
+      if (err) {
+        console.log(error);
+      }
+    });
+    res.status(500).json({
+      error: "Internal server error: Exception Caught in updateSyllabus",
+    });
   }
 };
 
-// 
+//
 export const downloadCourseSyllabus = async (req, res) => {
   console.log("Downloading Syllabus");
   try {
@@ -146,27 +172,28 @@ export const downloadCourseSyllabus = async (req, res) => {
     const course = await Course.findById(courseId);
     // If the course doesn't exist, return an error
     if (!course) {
-      return res.status(404).json({ error: 'Course not found' });
+      return res.status(404).json({ error: "Course not found" });
     }
-    console.log('Course found');
+    console.log("Course found");
     const asset_id = course.syllabusFile.asset_id;
     console.log(asset_id);
 
     cloudinary.config({
-      cloud_name: 'dqceqzjjv',
-      api_key: '168676738987823',
-      api_secret: 'wngWUjqE5tMIGdnuGBkRO5ss3Rk',
+      cloud_name: "dqceqzjjv",
+      api_key: "168676738987823",
+      api_secret: "wngWUjqE5tMIGdnuGBkRO5ss3Rk",
       secure: true,
     });
     // Download the file from Cloudinary
     cloudinary.api
       .resource_by_asset_id([`216b4c63d75f00b3db37e01e3d2f6a18`])
-      .then(console.log).then((result) => {
+      .then(console.log)
+      .then((result) => {
         console.log(result);
-        res.status(200).json({ message: 'Course syllabus downloaded', result });
+        res.status(200).json({ message: "Course syllabus downloaded", result });
       });
   } catch (error) {
-    console.error('Error downloading course:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error("Error downloading course:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
