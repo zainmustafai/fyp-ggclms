@@ -101,31 +101,146 @@ export const updateResources = async (req, res) => {
 
   try {
 
+    const courseId = req.params.id;
+    const course = await Course.findById(courseId);
     if (!course) {
       return res.status(404).json({ error: "Course not found" });
     };
     const resourceType = req.body.resourceType;
+    const date =req.body.date || new Date();
     const file = req.file;
-    const courseId = req.params.id;
-    const course = await Course.findById(courseId);
+    //Calculate the folder name
     const folder = course.courseCode.toString();
+    // Calculate the file name
     const fileName = course.courseCode.toString() + "_" + resourceType;
+    // UPLOAD FILE TO CLOUDINARY
+    const result = await uploadSingleFIleToCloudinary(file.path, folder, fileName);
+    // // DELETE FILE AFTER UPLOADING TO CLOUDINARY.
+    // try {
+    //   await fs.promises.unlink(file.path.toString());
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    // UPDATE THE COURSE WITH THE NEW RESOURCE
+    switch (resourceType) {
+      case "syllabus":
+        if (result) {
+          course.syllabusFile = {
+            filename: result.original_filename,
+            url: result.url,
+            publicId: result.public_id,
+            asset_id: result.asset_id,
+            date:date,
+          };
+          await course.save();
+        }
+        break;
+      case "lecturenotes":
+        if (result) {
+          course.lectureNotes.push({
+            filename: result.original_filename,
+            url: result.url,
+            publicId: result.public_id,
+            asset_id: result.asset_id,
+            date:date,
+          });
+          await course.save();
+        }
+        break;
+      case "labnotes":
+        if (result) {
+          course.labNotes.push({
+            filename: result.original_filename,
+            url: result.url,
+            publicId: result.public_id,
+            asset_id: result.asset_id,
+            date:date,
+          });
+          await course.save();
+        }
+        break;
+      case "recommendedreadings":
+        if (result) {
+          course.recommendedReadings.push({
+            filename: result.original_filename,
+            url: result.url,
+            publicId: result.public_id,
+            asset_id: result.asset_id,
+            date:date,
+          });
+          await course.save();
+        }
+        break;
+      case "generalresources":
+        if (result) {
+          course.generalResources.push({
+            filename: result.original_filename,
+            url: result.url,
+            publicId: result.public_id,
+            asset_id: result.asset_id,
+            date:date,
+          });
+          await course.save();
+        }
+        break;
+      case "quizzes":
+        if (result) {
+          course.quizzes.push({
+            filename: result.original_filename,
+            url: result.url,
+            publicId: result.public_id,
+            asset_id: result.asset_id,
+            date:date,
 
-    if (resourceType === 'syllabus') {
-      const result = uploadSingleFIleToCloudinary(file.path, folderName, fileName);
-    } else if (resourceType === 'lecturenotes') {
+          });
+          await course.save();
+        }
+        break;
+      case "assignments":
+        if (result) {
+          course.assignments.push({
+            filename: result.original_filename,
+            url: result.url,
+            publicId: result.public_id,
+            asset_id: result.asset_id,
+            date:date,
 
-    } else if (resourceType === 'labnotes') {
+          });
+          await course.save();
+        }
+        break;
+      case "project":
+        if (result) {
+          course.projects.push({
+            filename: result.original_filename,
+            url: result.url,
+            publicId: result.public_id,
+            asset_id: result.asset_id,
+            date:date,
 
-    } else if (resourceType === 'recommendedreadings') { }
-    else if (resourceType === 'generalresources') { }
-    else if (resourceType === 'quizzes') { }
-    else if (resourceType === 'assignments') { }
-    else if (resourceType === 'project') { }
-    else if (resourceType === 'presentations') { }
-    else { }
+          });
+          await course.save();
+        }
+        break;
+      case "presentations":
+        if (result) {
+          course.presentations.push({
+            filename: result.original_filename,
+            url: result.url,
+            publicId: result.public_id,
+            asset_id: result.asset_id,
+            date:date,
+          });
+          await course.save();
+        }
+        break;
+      default:
+        return res.status(400).json({ error: "Invalid resource type" });
+    }
+
+    res.status(200).json({ message: "Course resources updated", course });
   } catch (error) {
-    res.status(500).json({ error: "Exception Caugtht:Internal server error" });
+    res.status(500).json({ error: "Exception Caugtht:Internal server error. Resources Not Updated" });
   };
 };
 

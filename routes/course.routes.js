@@ -49,8 +49,8 @@ courseRouter.post(
 
 /**************************************************ROUTES FOR UPDATING COURSES ********************************************** */
 //*---------------- */ Course Syllabus
-courseRouter.put("/:id/syllabus", teacherAuthMiddleware, upload.single("syllabusFile"), updateSyllabus); // UPLOAD SYLLABUS ->FOR Syllabus only
-courseRouter.put("/:id/resources", teacherAuthMiddleware, upload.single('file'), updateResources); // UPLOAD RESOURCES.
+courseRouter.put("/:id/syllabus",  upload.single("syllabusFile"), updateSyllabus); // UPLOAD SYLLABUS ->FOR Syllabus only
+courseRouter.put("/:id/resources", upload.single('file'), updateResources); // UPLOAD RESOURCES.
 
 
 export default courseRouter;
