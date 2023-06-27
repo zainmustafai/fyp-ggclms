@@ -32,6 +32,8 @@ const courseSchema = new mongoose.Schema({
       publicId: { type: String },
       url: { type: String },
       asset_id: { type: String },
+      date: { type: Date, default: new Date().toISOString() },
+
     },
   ],
   homework: [
@@ -40,6 +42,8 @@ const courseSchema = new mongoose.Schema({
       publicId: { type: String },
       url: { type: String },
       asset_id: { type: String },
+      date: { type: Date, default: new Date().toISOString() },
+
     },
   ],
   project: {
@@ -47,6 +51,8 @@ const courseSchema = new mongoose.Schema({
     publicId: { type: String },
     url: { type: String },
     asset_id: { type: String },
+    date: { type: Date, default: new Date().toISOString() },
+
   },
   presentations: [
     {
@@ -54,6 +60,8 @@ const courseSchema = new mongoose.Schema({
       publicId: { type: String },
       url: { type: String },
       asset_id: { type: String },
+      date: { type: Date, default: new Date().toISOString() },
+
     },
   ],
   recommendedReadings: [
@@ -62,6 +70,7 @@ const courseSchema = new mongoose.Schema({
       publicId: { type: String },
       url: { type: String },
       asset_id: { type: String },
+      date: { type: Date, default: new Date().toISOString() },
     },
   ],
   generalResources: [
