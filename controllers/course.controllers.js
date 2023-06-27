@@ -2,8 +2,9 @@ import Course from "../models/course.model.js";
 import Teacher from "../models/teacher.model.js";
 import DiscussionBoard from "../models/discussionBoard.model.js";
 import { v2 as cloudinary } from "cloudinary";
-import streamifier from "streamifier"; // convert buffer to stream
+// import streamifier from "streamifier"; // convert buffer to stream
 import fs from "fs";
+import uploadSingleFIleToCloudinary from "./utils/uploadSingleFileToCloudinary.js";
 
 export const createNewCourse = async (req, res) => {
   console.log(req.body);
@@ -88,6 +89,46 @@ export const getCourseById = async (req, res) => {
     res.status(500).json({ error: "Exception Caugtht:Internal server error" });
   }
 };
+export const getResourcesCourseId = async (req, res) => {
+  try {
+
+  } catch (error) {
+    res.status(500).json({ error: "Exception Caugtht:Internal server error" });
+  };
+};
+/*************************************************************************** UPDATE RESOURCES ******************************************************************************* */
+export const updateResources = async (req, res) => {
+
+  try {
+
+    if (!course) {
+      return res.status(404).json({ error: "Course not found" });
+    };
+    const resourceType = req.body.resourceType;
+    const file = req.file;
+    const courseId = req.params.id;
+    const course = await Course.findById(courseId);
+    const folder = course.courseCode.toString();
+    const fileName = course.courseCode.toString() + "_" + resourceType;
+
+    if (resourceType === 'syllabus') {
+      const result = uploadSingleFIleToCloudinary(file.path, folderName, fileName);
+    } else if (resourceType === 'lecturenotes') {
+
+    } else if (resourceType === 'labnotes') {
+
+    } else if (resourceType === 'recommendedreadings') { }
+    else if (resourceType === 'generalresources') { }
+    else if (resourceType === 'quizzes') { }
+    else if (resourceType === 'assignments') { }
+    else if (resourceType === 'project') { }
+    else if (resourceType === 'presentations') { }
+    else { }
+  } catch (error) {
+    res.status(500).json({ error: "Exception Caugtht:Internal server error" });
+  };
+};
+
 export const getAllCourses = async (req, res) => {
   try {
     const courses = await Course.find().populate();

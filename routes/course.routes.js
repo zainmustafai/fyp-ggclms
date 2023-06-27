@@ -4,6 +4,8 @@ import {
   downloadCourseSyllabus,
   getAllCourses,
   getCourseById,
+  getResourcesCourseId,
+  updateResources,
   updateSyllabus,
 } from "../controllers/course.controllers.js";
 import teacherAuthMiddleware from "../middleware/teacherAuthentication.middleware.js";
@@ -14,18 +16,25 @@ import {
   getAllEnrollments,
 } from "../controllers/enrollment.controllers.js";
 import multer from "multer";
-// import { CloudinaryStorage } from "multer-storage-cloudinary"; //FOR ME: MUST RESEARCH ABOUT IT.
-// import { v2 as cloudinary } from "cloudinary";
 
-// Storage for the uploaded files
-//  
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    // Set the destination folder for uploaded files
+    cb(null, 'tempfiles/');
+  },
+  filename: function (req, file, cb) {
+    // Set the filename for uploaded files
+    cb(null, file.originalname);
+  }
+});
 
-// const upload = multer({ storage: storage });
 const upload = multer({ dest: 'tempfiles/' });
+// const uploadArray = multer().array('file', 10);
 const courseRouter = Router();
 courseRouter.post("/", teacherAuthMiddleware, createNewCourse);
 courseRouter.get("/", getAllCourses);
 courseRouter.get("/:id", getCourseById);
+courseRouter.get("/:id/resources", getResourcesCourseId); // FOR STUDENTS.
 courseRouter.get("/:id/syllabus", downloadCourseSyllabus);
 // POSTS
 courseRouter.get("/:id/posts", getAllPosts);
@@ -40,7 +49,8 @@ courseRouter.post(
 
 /**************************************************ROUTES FOR UPDATING COURSES ********************************************** */
 //*---------------- */ Course Syllabus
-courseRouter.put("/:id/syllabus", teacherAuthMiddleware,upload.single("syllabusFile"),updateSyllabus);
-courseRouter.put("/:id/lectureNotes", teacherAuthMiddleware);
+courseRouter.put("/:id/syllabus", teacherAuthMiddleware, upload.single("syllabusFile"), updateSyllabus); // UPLOAD SYLLABUS ->FOR Syllabus only
+courseRouter.put("/:id/resources", teacherAuthMiddleware, upload.single('file'), updateResources); // UPLOAD RESOURCES.
+
 
 export default courseRouter;

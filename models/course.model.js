@@ -36,7 +36,7 @@ const courseSchema = new mongoose.Schema({
 
     },
   ],
-  homework: [
+  assignments: [
     {
       filename: { type: String },
       publicId: { type: String },
