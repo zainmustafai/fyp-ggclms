@@ -6,7 +6,6 @@ import {
   getCourseById,
   getResourcesCourseId,
   updateResources,
-  updateSyllabus,
 } from "../controllers/course.controllers.js";
 import teacherAuthMiddleware from "../middleware/teacherAuthentication.middleware.js";
 import postAuthMiddleware from "../middleware/postAuth.middleware.js";
@@ -17,18 +16,8 @@ import {
 } from "../controllers/enrollment.controllers.js";
 import multer from "multer";
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    // Set the destination folder for uploaded files
-    cb(null, 'tempfiles/');
-  },
-  filename: function (req, file, cb) {
-    // Set the filename for uploaded files
-    cb(null, file.originalname);
-  }
-});
+const upload = multer({ dest: 'tempfiles/' })
 
-const upload = multer({ dest: 'tempfiles/' });
 // const uploadArray = multer().array('file', 10);
 const courseRouter = Router();
 courseRouter.post("/", teacherAuthMiddleware, createNewCourse);
@@ -49,8 +38,8 @@ courseRouter.post(
 
 /**************************************************ROUTES FOR UPDATING COURSES ********************************************** */
 //*---------------- */ Course Syllabus
-courseRouter.put("/:id/syllabus",  upload.single("syllabusFile"), updateSyllabus); // UPLOAD SYLLABUS ->FOR Syllabus only
-courseRouter.put("/:id/resources", upload.single('file'), updateResources); // UPLOAD RESOURCES.
+courseRouter.put("/:id/resources", upload.single("file"), updateResources); // UPLOAD RESOURCES.
 
-
+/**************************************************ROUTES FOR DELETING COURSE RESOURCES ********************************************** */
+courseRouter.delete("/:id/resources/:resourceId", (req, res) => {});
 export default courseRouter;

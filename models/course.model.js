@@ -32,7 +32,7 @@ const courseSchema = new mongoose.Schema({
       publicId: { type: String },
       url: { type: String },
       asset_id: { type: String },
-      date: { type: Date, default: new Date().toISOString() },
+      date: { type: Date,  },
 
     },
   ],
@@ -42,7 +42,7 @@ const courseSchema = new mongoose.Schema({
       publicId: { type: String },
       url: { type: String },
       asset_id: { type: String },
-      date: { type: Date, default: new Date().toISOString() },
+      date: { type: Date,  },
 
     },
   ],
@@ -51,7 +51,7 @@ const courseSchema = new mongoose.Schema({
     publicId: { type: String },
     url: { type: String },
     asset_id: { type: String },
-    date: { type: Date, default: new Date().toISOString() },
+    date: { type: Date,  },
 
   },
   presentations: [
@@ -60,8 +60,7 @@ const courseSchema = new mongoose.Schema({
       publicId: { type: String },
       url: { type: String },
       asset_id: { type: String },
-      date: { type: Date, default: new Date().toISOString() },
-
+      date: { type: Date,  },
     },
   ],
   recommendedReadings: [
@@ -70,7 +69,7 @@ const courseSchema = new mongoose.Schema({
       publicId: { type: String },
       url: { type: String },
       asset_id: { type: String },
-      date: { type: Date, default: new Date().toISOString() },
+      date: { type: Date,  },
     },
   ],
   generalResources: [
@@ -89,8 +88,8 @@ const courseSchema = new mongoose.Schema({
       asset_id: { type: String },
     },
   ],
-  createdAt: { type: Date, default: new Date().toISOString() },
-  updatedAt: { type: Date, default: new Date().toISOString() },
+  createdAt: { type: Date, default: Date.now() },
+  updatedAt: { type: Date, default: Date.now() },
 });
 // USER DEFINED METHODS
 // **************************FIND COURSE BY CourseCode.
